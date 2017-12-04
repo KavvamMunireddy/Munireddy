@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
 	@Autowired 
-	private UserService service;
-	@RequestMapping(path="/create/user",method=RequestMethod.POST)
+	private UserService userService;
+	@RequestMapping(path="/create/user",method=RequestMethod.GET)
 	public ResponseEntity<String> createUser(@RequestBody User user){
 		String string=null;
 		if(user!=null){
-			 string=	service.createUser(user);
+			 string=	userService.createUser(user);
 			if(string!=null){
 				return new ResponseEntity<>(string,HttpStatus.OK);
 			}
@@ -28,22 +28,22 @@ public class UserController {
 		return new ResponseEntity<>(string,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@RequestMapping(path="/update/user/{userId}",method=RequestMethod.PUT)
-	public ResponseEntity<String> updateUser(@PathVariable("userId") String userId){
-		String string=null;
+	public ResponseEntity<User> updateUser(@PathVariable("userId") String userId){
+		User user=null;
 		if(!StringUtils.isEmpty(userId)){
-			 string=	service.updateUser(userId);
-			if(string!=null){
-				return new ResponseEntity<>(string,HttpStatus.OK);
+			 user=	userService.updateUser(userId);
+			if(user!=null){
+				return new ResponseEntity<>(user,HttpStatus.OK);
 			}
-			return new ResponseEntity<>(string,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(user,HttpStatus.NO_CONTENT);
 		}
-		return new ResponseEntity<>(string,HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(user,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	@RequestMapping(path="/delete/user/{userId}",method=RequestMethod.DELETE)
 	public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId){
 		String string=null;
 		if(!StringUtils.isEmpty(userId)){
-			 string=	service.deleteUser(string);
+			 string=	userService.deleteUser(string);
 			if(!StringUtils.isEmpty(string)){
 				return new ResponseEntity<>(string,HttpStatus.OK);
 			}
